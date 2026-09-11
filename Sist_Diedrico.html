@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Figura 1: Sistema de Proyección Diédrica e Isométrico</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        title: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        unacomBlue: '#0077D4',   /* Azul Oficial PMS 285 */
+                        unacomRed: '#D32F2F',    /* Rojo Comuna */
+                        unacomYellow: '#FFC72C', /* Amarillo Comuna */
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-100 p-4 sm:p-8 min-h-screen flex items-center justify-center font-sans text-slate-800">
+
+    <!-- Tarjeta Principal del Cuadro Interactivo -->
+    <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 space-y-3 max-w-3xl w-full shadow-sm">
+        <div class="flex items-center justify-between flex-wrap gap-2">
+            <h4 class="text-sm font-bold text-slate-800 flex items-center gap-1.5">
+                <i class="fa-solid fa-vector-square text-unacomBlue"></i> Figura 1: Sistema de Proyección Diédrica (Primer Diedro) e Isométrico
+            </h4>
+            <button onclick="showFig1Info('reset')" class="text-xs bg-slate-200 hover:bg-slate-300 text-slate-700 px-2.5 py-1 rounded-md font-medium transition-colors flex items-center gap-1">
+                <i class="fa-solid fa-rotate-right text-[10px]"></i> Ver Todos
+            </button>
+        </div>
+        <p class="text-xs text-slate-500">Haz clic sobre las vistas en el plano o sobre las caras del sólido 3D para destacar la proyección correspondiente.</p>
+        
+        <div class="flex flex-col md:flex-row gap-6 items-center justify-center p-4 bg-white border border-slate-200 rounded-lg">
+            <svg viewBox="0 0 490 220" class="w-full max-w-lg h-auto select-none">
+                <!-- Marcos de Planos de Proyección -->
+                <rect x="10" y="10" width="130" height="90" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1" rx="4"></rect>
+                <text x="15" y="21" font-size="7" font-weight="bold" fill="#94a3b8">PLANO VERTICAL (PV)</text>
+                
+                <rect x="10" y="115" width="130" height="90" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1" rx="4"></rect>
+                <text x="15" y="126" font-size="7" font-weight="bold" fill="#94a3b8">PLANO HORIZONTAL (PH)</text>
+                
+                <rect x="155" y="115" width="130" height="90" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1" rx="4"></rect>
+                <text x="160" y="126" font-size="7" font-weight="bold" fill="#94a3b8">PLANO PERFIL (PP)</text>
+                
+                <!-- Líneas de Correspondencia Ortogonal -->
+                <line x1="75" y1="90" x2="75" y2="125" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3 3" id="line-vertical"></line>
+                <line x1="135" y1="160" x2="160" y2="160" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3 3" id="line-horizontal"></line>
+                
+                <!-- VISTA 1: ALZADO (FRENTE) -->
+                <g class="cursor-pointer transition-all duration-300" onclick="showFig1Info('alzado')" id="group-2d-alzado">
+                    <rect id="rect-2d-alzado" x="20" y="25" width="110" height="60" fill="#0077D4" fill-opacity="0.1" stroke="#0077D4" stroke-width="2" rx="4" class="transition-all duration-300"></rect>
+                    <text id="text-2d-alzado" x="75" y="58" text-anchor="middle" font-size="9" fill="#0077D4" font-weight="bold">ALZADO (FRENTE)</text>
+                </g>
+                
+                <!-- VISTA 2: PLANTA (SUPERIOR) -->
+                <g class="cursor-pointer transition-all duration-300" onclick="showFig1Info('planta')" id="group-2d-planta">
+                    <rect id="rect-2d-planta" x="20" y="130" width="110" height="60" fill="#D32F2F" fill-opacity="0.1" stroke="#D32F2F" stroke-width="2" rx="4" class="transition-all duration-300"></rect>
+                    <text id="text-2d-planta" x="75" y="163" text-anchor="middle" font-size="9" fill="#D32F2F" font-weight="bold">PLANTA (VISTA SUP.)</text>
+                </g>
+                
+                <!-- VISTA 3: PERFIL LATERAL -->
+                <g class="cursor-pointer transition-all duration-300" onclick="showFig1Info('perfil')" id="group-2d-perfil">
+                    <rect id="rect-2d-perfil" x="165" y="130" width="110" height="60" fill="#FFC72C" fill-opacity="0.15" stroke="#D97706" stroke-width="2" rx="4" class="transition-all duration-300"></rect>
+                    <text id="text-2d-perfil" x="220" y="163" text-anchor="middle" font-size="9" fill="#b45309" font-weight="bold">PERFIL LATERAL</text>
+                </g>
+                
+                <!-- ISOMÉTRICO 3D INTERACTIVO -->
+                <g transform="translate(340, 35)">
+                    <!-- Etiqueta superior del bloque -->
+                    <text x="40" y="0" text-anchor="middle" font-size="9" fill="#64748b" font-weight="bold">SÓLIDO ISOMÉTRICO 3D</text>
+                    
+                    <!-- Cara Superior (Planta - Rojo) -->
+                    <path id="iso-top" d="M 0,35 L 40,15 L 80,35 L 40,55 Z" 
+                          fill="#D32F2F" fill-opacity="0.25" stroke="#D32F2F" stroke-width="1.5" 
+                          class="cursor-pointer transition-all duration-300 hover:fill-opacity-80" 
+                          onclick="showFig1Info('planta')">
+                    </path>
+                    <text x="40" y="38" text-anchor="middle" font-size="8" fill="#991b1b" font-weight="bold" class="pointer-events-none">PLANTA</text>
+
+                    <!-- Cara Frontal Izquierda (Alzado - Azul) -->
+                    <path id="iso-front" d="M 0,35 L 0,85 L 40,105 L 40,55 Z" 
+                          fill="#0077D4" fill-opacity="0.25" stroke="#0077D4" stroke-width="1.5" 
+                          class="cursor-pointer transition-all duration-300 hover:fill-opacity-80" 
+                          onclick="showFig1Info('alzado')">
+                    </path>
+                    <text x="18" y="72" text-anchor="middle" font-size="8" fill="#0055a5" font-weight="bold" class="pointer-events-none" transform="rotate(-25 18 72)">ALZADO</text>
+
+                    <!-- Cara Frontal Derecha (Perfil - Amarillo/Ámbar) -->
+                    <path id="iso-side" d="M 40,55 L 40,105 L 80,85 L 80,35 Z" 
+                          fill="#FFC72C" fill-opacity="0.35" stroke="#D97706" stroke-width="1.5" 
+                          class="cursor-pointer transition-all duration-300 hover:fill-opacity-80" 
+                          onclick="showFig1Info('perfil')">
+                    </path>
+                    <text x="62" y="72" text-anchor="middle" font-size="8" fill="#b45309" font-weight="bold" class="pointer-events-none" transform="rotate(25 62 72)">PERFIL</text>
+                    
+                    <text x="40" y="125" text-anchor="middle" font-size="8" fill="#94a3b8" font-style="italic">Haz clic en cada cara</text>
+                </g>
+            </svg>
+            
+            <!-- Panel Informativo -->
+            <div id="fig1-info" class="text-xs text-slate-600 bg-slate-100 p-4 rounded-lg md:w-56 text-center font-medium border border-slate-200 transition-all duration-300">
+                Haz clic sobre alguna de las proyecciones ortogonales o las caras del sólido 3D para analizar sus características geométricas.
+            </div>
+        </div>
+    </div>
+
+    <!-- Lógica de Interacción en JavaScript -->
+    <script>
+    function showFig1Info(viewType) {
+        const info = document.getElementById('fig1-info');
+        
+        // Elementos 2D
+        const rectAlzado = document.getElementById('rect-2d-alzado');
+        const textAlzado = document.getElementById('text-2d-alzado');
+        
+        const rectPlanta = document.getElementById('rect-2d-planta');
+        const textPlanta = document.getElementById('text-2d-planta');
+        
+        const rectPerfil = document.getElementById('rect-2d-perfil');
+        const textPerfil = document.getElementById('text-2d-perfil');
+        
+        // Caras 3D
+        const isoFront = document.getElementById('iso-front');
+        const isoTop = document.getElementById('iso-top');
+        const isoSide = document.getElementById('iso-side');
+        
+        // Líneas auxiliares
+        const lineV = document.getElementById('line-vertical');
+        const lineH = document.getElementById('line-horizontal');
+
+        // Resetear estilos base
+        rectAlzado.setAttribute('fill', '#0077D4');
+        rectAlzado.setAttribute('fill-opacity', '0.1');
+        rectAlzado.setAttribute('stroke-width', '2');
+        textAlzado.setAttribute('fill', '#0077D4');
+
+        rectPlanta.setAttribute('fill', '#D32F2F');
+        rectPlanta.setAttribute('fill-opacity', '0.1');
+        rectPlanta.setAttribute('stroke-width', '2');
+        textPlanta.setAttribute('fill', '#D32F2F');
+
+        rectPerfil.setAttribute('fill', '#FFC72C');
+        rectPerfil.setAttribute('fill-opacity', '0.15');
+        rectPerfil.setAttribute('stroke-width', '2');
+        textPerfil.setAttribute('fill', '#b45309');
+
+        isoFront.setAttribute('fill-opacity', '0.25');
+        isoFront.setAttribute('stroke-width', '1.5');
+
+        isoTop.setAttribute('fill-opacity', '0.25');
+        isoTop.setAttribute('stroke-width', '1.5');
+
+        isoSide.setAttribute('fill-opacity', '0.35');
+        isoSide.setAttribute('stroke-width', '1.5');
+
+        lineV.setAttribute('stroke', '#94a3b8');
+        lineV.setAttribute('stroke-width', '1');
+        lineH.setAttribute('stroke', '#94a3b8');
+        lineH.setAttribute('stroke-width', '1');
+
+        if (viewType === 'alzado') {
+            // Destacar Alzado (Azul)
+            rectAlzado.setAttribute('fill-opacity', '0.85');
+            rectAlzado.setAttribute('stroke-width', '3');
+            textAlzado.setAttribute('fill', '#FFFFFF');
+
+            isoFront.setAttribute('fill-opacity', '0.9');
+            isoFront.setAttribute('stroke-width', '3');
+
+            lineV.setAttribute('stroke', '#0077D4');
+            lineV.setAttribute('stroke-width', '2');
+
+            info.innerHTML = "<div class='flex items-center justify-center gap-1.5 mb-1 font-bold text-unacomBlue'><i class='fa-solid fa-cube'></i> ALZADO (VISTA FRONTAL)</div>La vista frontal del elemento revela alturas y cotas verticales. Es clave para analizar fachadas y colocación de ventanas y puertas.";
+            info.className = "text-xs text-unacomBlue bg-unacomBlue/10 p-4 rounded-lg md:w-56 text-center font-medium border-2 border-unacomBlue shadow-sm";
+
+        } else if (viewType === 'planta') {
+            // Destacar Planta (Rojo)
+            rectPlanta.setAttribute('fill-opacity', '0.85');
+            rectPlanta.setAttribute('stroke-width', '3');
+            textPlanta.setAttribute('fill', '#FFFFFF');
+
+            isoTop.setAttribute('fill-opacity', '0.9');
+            isoTop.setAttribute('stroke-width', '3');
+
+            lineV.setAttribute('stroke', '#D32F2F');
+            lineV.setAttribute('stroke-width', '2');
+            lineH.setAttribute('stroke', '#D32F2F');
+            lineH.setAttribute('stroke-width', '2');
+
+            info.innerHTML = "<div class='flex items-center justify-center gap-1.5 mb-1 font-bold text-unacomRed'><i class='fa-solid fa-layer-group'></i> PLANTA (VISTA SUPERIOR)</div>Muestra la distancia entre muros y columnas en la dirección horizontal. Es esencial para verificar la distribución de la cimentación y la ubicación de muros de carga.";
+            info.className = "text-xs text-unacomRed bg-unacomRed/10 p-4 rounded-lg md:w-56 text-center font-medium border-2 border-unacomRed shadow-sm";
+
+        } else if (viewType === 'perfil') {
+            // Destacar Perfil (Amarillo/Ámbar)
+            rectPerfil.setAttribute('fill-opacity', '0.9');
+            rectPerfil.setAttribute('stroke-width', '3');
+            textPerfil.setAttribute('fill', '#78350f');
+
+            isoSide.setAttribute('fill-opacity', '0.95');
+            isoSide.setAttribute('stroke-width', '3');
+
+            lineH.setAttribute('stroke', '#D97706');
+            lineH.setAttribute('stroke-width', '2');
+
+            info.innerHTML = "<div class='flex items-center justify-center gap-1.5 mb-1 font-bold text-amber-700'><i class='fa-solid fa-border-left'></i> PERFIL LATERAL</div>El perfil lateral muestra la profundidad y el espesor de los elementos estructurales. Permite conectar las cotas de alzado con las de planta.";
+            info.className = "text-xs text-amber-800 bg-amber-50 p-4 rounded-lg md:w-56 text-center font-medium border-2 border-amber-400 shadow-sm";
+
+        } else if (viewType === 'reset') {
+            info.innerHTML = "Haz clic sobre alguna de las proyecciones ortogonales o las caras del sólido 3D para analizar sus características geométricas.";
+            info.className = "text-xs text-slate-600 bg-slate-100 p-4 rounded-lg md:w-56 text-center font-medium border border-slate-200";
+        }
+    }
+    </script>
+</body>
+</html>
